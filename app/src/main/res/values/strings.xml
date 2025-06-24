@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Developer Options Toggle</string>
+    <string name="toggle_widget_description">A widget to quickly toggle Developer Options.</string>
+    <string name="shortcut_widget_description">A shortcut to the Developer Options system screen.</string>
+</resources>
