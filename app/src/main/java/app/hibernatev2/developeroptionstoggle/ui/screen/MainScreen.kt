@@ -34,7 +34,9 @@ import app.hibernatev2.developeroptionstoggle.ui.viewmodel.MainViewModel
 
 @Composable
 fun MainScreen(viewModel: MainViewModel) {
-    val isEnabled by viewModel.developerOptionsEnabled.collectAsStateWithLifecycle()
+    val isDeveloperOptionsEnabled by viewModel.developerOptionsEnabled.collectAsStateWithLifecycle()
+    val isUsbDebuggingEnabled by viewModel.usbDebuggingEnabled.collectAsStateWithLifecycle()
+    val isWifiDebuggingEnabled by viewModel.wifiDebuggingEnabled.collectAsStateWithLifecycle()
     val hasPermission by viewModel.hasPermission.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -56,34 +58,66 @@ fun MainScreen(viewModel: MainViewModel) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = "Developer Options are",
-            style = MaterialTheme.typography.titleLarge
+        SettingSwitch(
+            title = "Developer Options",
+            enabled = hasPermission,
+            checked = isDeveloperOptionsEnabled,
+            onCheckedChange = { viewModel.setDeveloperOptions(it) }
         )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = if (isEnabled) "On" else "Off",
-            style = MaterialTheme.typography.headlineMedium,
-            color = if (isEnabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
-        )
+
         Spacer(modifier = Modifier.height(24.dp))
-        Switch(
-            checked = isEnabled,
-            onCheckedChange = { viewModel.setDeveloperOptions(it) },
-            enabled = hasPermission
+
+        SettingSwitch(
+            title = "USB Debugging",
+            enabled = hasPermission && isDeveloperOptionsEnabled,
+            checked = isUsbDebuggingEnabled,
+            onCheckedChange = { viewModel.setUsbDebugging(it) }
         )
+
         Spacer(modifier = Modifier.height(24.dp))
+
+        SettingSwitch(
+            title = "Wi-Fi Debugging",
+            enabled = hasPermission && isDeveloperOptionsEnabled,
+            checked = isWifiDebuggingEnabled,
+            onCheckedChange = { viewModel.setWifiDebugging(it) }
+        )
+
+        Spacer(modifier = Modifier.height(32.dp))
+
         Button(onClick = {
             val intent = Intent(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS)
             context.startActivity(intent)
         }) {
-            Text("Go To System Settings")
+            Text("Developer Options")
         }
 
         if (!hasPermission) {
             Spacer(modifier = Modifier.height(32.dp))
             PermissionWarning()
         }
+    }
+}
+
+@Composable
+private fun SettingSwitch(
+    title: String,
+    enabled: Boolean,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit
+) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Switch(
+            checked = checked,
+            onCheckedChange = onCheckedChange,
+            enabled = enabled
+        )
     }
 }
 

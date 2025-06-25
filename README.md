@@ -23,7 +23,7 @@ Because this app modifies a secure system setting, you **must** grant it a speci
 
 ### 1. Installation
 
-Install the application on your Android device. You can do this by downloading the latest `.apk` file from the [Releases](https://github.com/your-username/your-repo/releases) page.
+Install the application on your Android device. You can do this by downloading the latest `.apk` file from the [Releases](https://github.com/himphen/Developer-Options-Toggle/releases/) page.
 
 ### 2. Granting Permission
 

@@ -22,6 +22,30 @@ object DeveloperSettingManager {
         }
     }
 
+    fun isUsbDebuggingEnabled(context: Context): Boolean {
+        return try {
+            Settings.Global.getInt(
+                context.contentResolver,
+                Settings.Global.ADB_ENABLED, 0
+            ) == 1
+        } catch (e: SecurityException) {
+            Log.e(TAG, "Missing WRITE_SECURE_SETTINGS permission.", e)
+            false
+        }
+    }
+
+    fun isWifiDebuggingEnabled(context: Context): Boolean {
+        return try {
+            Settings.Global.getInt(
+                context.contentResolver,
+                "adb_wifi_enabled", 0
+            ) == 1
+        } catch (e: SecurityException) {
+            Log.e(TAG, "Missing WRITE_SECURE_SETTINGS permission.", e)
+            false
+        }
+    }
+
     fun setDeveloperOptions(enabled: Boolean, context: Context): Boolean {
         return try {
             Settings.Global.putString(
@@ -30,7 +54,35 @@ object DeveloperSettingManager {
             )
             true
         } catch (e: SecurityException) {
-            Log.e(TAG, "Missing WRITE_SECURE_SETTINGS permission.", e)
+            Log.e(TAG, "Failed to set Developer Options.", e)
+            false
+        }
+    }
+
+    fun setUsbDebugging(enabled: Boolean, context: Context): Boolean {
+        return try {
+            Settings.Global.putString(
+                context.contentResolver,
+                Settings.Global.ADB_ENABLED,
+                if (enabled) "1" else "0"
+            )
+            true
+        } catch (e: SecurityException) {
+            Log.e(TAG, "Failed to set USB Debugging.", e)
+            false
+        }
+    }
+
+    fun setWifiDebugging(enabled: Boolean, context: Context): Boolean {
+        return try {
+            Settings.Global.putString(
+                context.contentResolver,
+                "adb_wifi_enabled",
+                if (enabled) "1" else "0"
+            )
+            true
+        } catch (e: SecurityException) {
+            Log.e(TAG, "Failed to set Wi-Fi Debugging.", e)
             false
         }
     }
