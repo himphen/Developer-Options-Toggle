@@ -10,6 +10,10 @@ A simple, robust Android utility to toggle Developer Options with a single click
 * **Quick Shortcut Widget:** Add a separate widget that acts as a simple shortcut to open the system's Developer Options screen directly.
 * **Modern & Lightweight:** Built with 100% Kotlin, Jetpack Compose, and Material 3, with a dark mode-only theme and minimal impact on system resources.
 
+## 📸 Screenshot
+
+<img src="assets/Screenshot1.png" width="200" alt="Screenshot 1">
+
 ## 📋 Prerequisites
 
 Before you begin, ensure you have the following:
